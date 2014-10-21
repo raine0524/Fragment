@@ -1,0 +1,166 @@
+"display settings
+set nu
+set shiftwidth=4
+set guifont=Courier_New:h10:cANSI 	"font setting
+autocmd InsertLeave * se nocul
+autocmd InsertEnter * se cul
+set ruler
+set showcmd
+set cmdheight=2
+set laststatus=2
+
+"encode settings
+set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
+set termencoding=utf-8
+set encoding=utf-8
+set fileencodings=ucs-bom,utf-8,cp936
+set fileencoding=utf-8
+
+"keyboard commands
+map <C-A> ggVGY
+map! <C-A> <Esc>ggVGY
+vmap <C-c> "+y
+
+"utils settings
+set autoread
+set nocompatible
+autocmd FileType c,cpp map <buffer> <leader><space> :w<cr>:make<cr>
+set nobackup
+set noswapfile
+set autowrite
+set ruler
+set cursorline
+set magic
+set foldcolumn=0
+"set foldmethod=indent
+"set foldlevel=3
+"set foldenable
+colorscheme darkblue
+syntax enable
+syntax on
+set noeb
+set confirm
+set autoindent
+set cindent
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set noexpandtab
+set smarttab
+set history=100
+set ignorecase
+set hlsearch
+set incsearch
+set gdefault
+filetype on
+filetype indent on
+set viminfo+=!
+set linespace=0
+set wildmenu
+set backspace=2
+set mouse=a
+set selection=exclusive
+set selectmode=mouse,key
+set report=0
+set fillchars=vert:\ ,stl:\ ,stlnc:\
+set showmatch
+set matchtime=1
+set scrolloff=3
+set smartindent
+
+map <C-F12> :!ctags * --c-types=+p --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
+"taglist settings
+let Tlist_Sort_Type = "name"	"sort by name
+let Tlist_Use_Right_Window = 0
+let Tlist_Compart_Format = 1
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_File_Fold_Auto_Close = 0
+let Tlist_Enable_Fold_Column = 0
+let Tlist_Show_One_File = 1
+let Tlist_Auto_Open = 1
+let Tlist_Ctags_Cmd = '/usr/bin/ctags'
+
+"cscope
+set cscopequickfix=s-,c-,d-,i-,t-,e-
+
+"minibufexplorer
+let g:miniBufExplMapWindowNavVim = 1
+let g:miniBufExplMapWindowNavArrows = 1
+let g:miniBufExplMapCTabSwitchBufs = 1
+let g:miniBufExplModSelTarget = 1
+let g:miniBufExplMoreThanOne = 0
+
+"winManager
+let g:winManagerWindowLayout='FileExplorer|Taglist'
+nmap wm :WMToggle<cr>
+
+"a.vim
+nnoremap <silent> <F12> :A<CR>
+
+"automatic complete
+:inoremap ( ()<ESC>i
+:inoremap ) <c-r>=ClosePair(')')<CR>
+:inoremap { {<CR>}<ESC>O
+:inoremap } <c-r>=ClosePair('}')<CR>
+:inoremap [ []<ESC>i
+:inoremap ] <c-r>=ClosePair(']')<CR>
+:inoremap " ""<ESC>i
+:inoremap ' ''<ESC>i
+function! ClosePair(char)
+	if getline('.')[col('.')-1] == a:char
+		return "\<Right>"
+	else
+		return a:char
+	endif
+endfunction
+filetype plugin indent on
+set completeopt=longest,menu
+
+"OmniCppComplete
+let OmniCpp_DefaultNamespaces = ["std"]
+let OmniCpp_GlobalScopeSearch = 1 "0 or 1
+let OmniCpp_NamespaceSearch = 1 "0, 1 or 2
+let OmniCpp_DisplayMode = 1
+let OmniCpp_ShowScopeInAbbr = 0
+let OmniCpp_ShowPrototypeInAbbr = 1
+let OmniCpp_ShowAccess = 1
+let OmniCpp_MayCompleteDot = 1
+let OmniCpp_MayCompleteArrow = 1
+let OmniCpp_MayCompleteScope = 1
+
+"SuperTab
+let g:SuperTabRetainCompletionType=2
+let g:SuperTabDefaultCompletionType="<C-X> <C-O>"
+
+
+"If you want to configure a developing environment in another machine like
+"this, you just need to copy this file to that one.Then install ctags and git,
+"which the former is not only a plugin simplely developped for vim.Then you
+"should enter into home dir and make a hidden directory named '.vim' which is
+"created by using command `mkdir ~/.vim`.Followed closely by the aboved
+"operation you should download a powerful plugin manager for vim named 'vundle' by `git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle`.Finally open the vim editor and press :BundleInstall to complete the setup of the plugins.
+"bundle settings(plugins management)
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+"----------------------------------
+" let Vundle manage Vundle
+Bundle 'gmarik/vundle'
+"vim-scripts repos
+Bundle 'taglist.vim'
+Bundle 'cscope.vim'
+Bundle 'OmniCppComplete'
+Bundle 'winmanager'
+Bundle 'minibufexplorerpp'
+"Bundle 'visualMarks.vim'
+Bundle 'SuperTab'
+Bundle 'a.vim'
+Bundle 'checksyntax'
+Bundle 'Indent-Guides'
+"----------------------------------
+"Brief help
+" :BundleList		-list configured bundles
+" :BundleInstall(!)	-install(update) bundles
+" :BundleSearch(!) foo	-search(or refresh cache first) for foo
+" :BundleClean(!)	-confirm(or auto-approve) removal of unused bundles
+" see :h vundle for more details or wiki for FAQ
+" NOTE: comments after Bundle command are not allowed..
