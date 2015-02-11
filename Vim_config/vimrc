@@ -133,12 +133,15 @@ let g:SuperTabRetainCompletionType=2
 let g:SuperTabDefaultCompletionType="<C-X> <C-O>"
 
 
-"If you want to configure a developing environment in another machine like
-"this, you just need to copy this file to that one.Then install ctags and git,
+"If you want to configure a developing environment in another machine, 
+"you just need to copy this file to that one.Then install ctags and git,
 "which the former is not only a plugin simplely developped for vim.Then you
 "should enter into home dir and make a hidden directory named '.vim' which is
 "created by using command `mkdir ~/.vim`.Followed closely by the aboved
-"operation you should download a powerful plugin manager for vim named 'vundle' by `git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle`.Finally open the vim editor and press :BundleInstall to complete the setup of the plugins.
+"operation you should download a powerful plugin manager for vim named 'vundle' 
+"by `git clone https://github.com/gmarik/vundle.git ~/.vim/bundle/vundle`.
+"Finally open the vim editor and press :BundleInstall to complete the setup of the plugins.
+
 "bundle settings(plugins management)
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
