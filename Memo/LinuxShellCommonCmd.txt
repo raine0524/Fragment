@@ -1,0 +1,66 @@
+注：以下知识各个命令的简单介绍，详细可参考man或者--help
+解压缩命令  tar zxvf *.tar.gz
+
+查看目录或文件大小的命令  du，若需要知道当前目录的大小，那么输入du -sh .
+
+在同一台电脑上copy文件用cp，在不同的Linux之间copy文件使用scp，比如scp file root@192.168.5.136:/root 就是把file文件从本机拷贝到ip地址为192.168.5.136的Linux系统的/root目录下
+
+在Linux进行硬盘的分区操作可以使用fdisk命令，分完区之后记得需要对分区进行格式化以及挂载
+
+mount命令用于对设备进行挂载，所谓挂载就是将目录和设备对应起来，使得操作这个目录就等价于操作这个设备，例如 mount /dev/sda /mnt/sda就是将设备/dev/sda挂载到/mnt/sda目录下，使用完成之后就可以使用umount /dev/sda卸载设备
+
+kill命令用来终止一个进程，例如：kill -9 324表示强行终止pid为324的进程
+
+ps命令用于显示当前系统中拥有的进程
+
+find和grep都是查找命令，区别在于find是找系统中拥有的文件，而grep则是找指定文件中与参数匹配的部分
+
+netstat -anp | grep 3306 用来找到占用端口3306的进程，找到占用进程后可以通过kill -9命令杀掉进程从而释放端口
+
+当要查找命令，源文件或者参考手册的具体位置时可以使用whereis命令，这个命令主要在/bin目录和/usr目录下定位待查找内容
+
+如果要查看一个二进制文件依赖的动态库可以使用ldd命令
+
+如果想要下载某个安装包并一键安装可以直接使用命令yum install zlib（下载zlib库），如果系统中已经安装了zlib库，那么使用这个命令将会把zlib库更新至最新版本
+
+如果已经知道了某个包的存放路径，那么可以使用wget命令直接下载下来，比如：wget http://dss.macosforge.org/downloads/DarwinStreamingSrvr5.5.5-Linux-tar.gz
+
+在Linux中，没有文件创建时间的概念。只有文件的访问时间、修改时间、状态改变时间。
+如果文件创建后没有修改过，修改时间=创建时间;
+如果文件创建后，状态没有改变过，那么状态改变时间=创建时间;
+如果文件创建后，没有被读取过，那么访问时间=创建时间，这个基本不太可能。
+可以使用 "stat FileName"来查看文件的时间
+
+ln为一个文件在另外一个位置建立一个同步的链接，这个命令最常用的参数是-s，具体用法是："ln -s 源文件 目标文件"，例如：ln -s /bin/less /usr/local/bin/less就在/usr/local/bin目录下为/bin/less创建了一个符号链接
+
+在Linux下使用gdb调试应用时通常需要生成core文件，这是为了保证在调试过程中遇到问题可以随时重新启动调试进程，更便于调试。假设被调试进程的pid为18237，那么可以使用gcore 18237生成core文件（使用gcore命令需要保证此前已安装gdb），这样在启动调试时可以使用"gdb ./nginx core.18237"命令进行调试
+
+lsof - list open files 列出打开文件，这个命令列出由进程打开的文件的一些信息。因为应用程序打开文件的描述符列表提供了大量关于这个应用程序本身的信息，因此通过lsof工具能够查看这个列表，对系统监测和排错很有帮助。
+有关lsof的详细信息可以参考链接： http://blog.csdn.net/ithomer/article/details/8649706
+
+chmod用于改变某个文件的权限，例如chmod 777 target表示给目标所有权限。r——read(4，表示读权限)，w——write(2，写权限)，x——execute(1，执行权限)，rwx=7
+chmod u+x target，给所有者增加执行权限，u——所有者，g——所属组，o——其他人，
+a——所有人，+代表增加相关权限，-代表减去相关权限
+
+使用wc -l命令统计整个文件的行数，但使用find . -name "*" | wc -l只不过是统计了当前目录及各子目录下的文件数量，必须要使用find . -name "*" | xargs wc -l这个命令才能统计所有匹配文件的总行数，上述命令分别计算每个匹配文件的行数，最后累加得出总的行数
+
+默认安装的Linux会设置10分钟内没有响应则进入休眠，若想要禁用休眠使用setterm -blank 0命令，若将0换成其他大于0的整数，那就等于启用休眠，此外，setterm命令还能获取控制台快照，例如setterm -dump 1，其中1指的是第一个控制台的内容，生成的.dump文件可用vi打开
+
+Ubuntu的开机自动启动脚本为/etc/rc.local文件，Centos的自启动脚本为/etc/rc.d/rc.local文件，不同Linux分发版的自启动脚本各有差别，但基本上都存放在/etc配置目录下。对于某些系统服务如mysqld来说可以使用命令chkconfig mysqld on设置自启动，但对于不是系统服务的其他命令来说，则需要将这些命令存放在自启动脚本中，让系统在启动完毕之后自动帮我们执行
+
+在Ubuntu上配置静态IP的方法：使用vim打开/etc/network/interfaces文件，将iface eth0 inet dhcp注释掉，DHCP是检测并为本机设置动态IP的协议，如果不想静态地配置IP地址则使用该命令。然后在文件末尾追加如下内容：
+iface eth0 inet static
+address 192.168.1.110		#IP地址
+netmask 255.255.255.0		#子网掩码
+gateway 192.168.1.254		#默认网关
+dns-nameservers 202.96.209.5	#DNS服务器地址
+最后使用/etc/init.d/networking restart命令重启networking服务使其生效
+
+Linux运行某个程序时出现“error while loading shared libraries”这样的错误提示，一般有2种可能：①没有安装应用所需的共享库；②安装了共享库，但应用按照默认共享库路径无法查找该文件
+解决办法：①将共享库拷贝至/usr/lib目录下，这样就可以被应用所找到；②编辑/etc/ld.so.conf文件，将所需lib所在目录加入该配置文件中，并使用ldconfig命令使配置生效，这样也可以被应用找到
+
+strings命令用于显示文本中的ASCII字符，如果strings的参数为文本文件，那么这个命令的作用和cat命令相同，但如果作用的对象是二进制文件，那么strings是取出二进制文件中的ASCII部分进行显示，而cat则不区分将二进制中所有的内容全部输出。一般来说，在二进制文件或是其他数据文件中都存在文件本身的元信息，这个时候可以通过strings命令来打印
+
+Linux可以使用free命令来查看内存的使用情况（通常是用free -m），查看cpu和内存使用情况的命令是top，还有另外一个命令行工具 'htop'，它与传统的 top 命令功能一样，但它有更加强大的功能及能显示更多的信息，但是htop一般不是系统自带的，在使用之前需要下载(apt-get install htop)，查看磁盘空间占用情况的命令是df -hl，这3个命令的更多用法参见manual手册或者通过--help选项得到
+
+在Linux上想要得到某个命令的详细解释可以使用man命令，但它不是最高效的，一般来说可以通过使用cheat命令快速的得到其他命令的用法，它不会提供很多额外的多余的信息，并且其提供了很多关于该命令的常用例子，但cheat命令不是Linux系统自带的，它需要自行安装，安装方法可参考：http://www.cricode.com/3412.html，比如想要知道tar命令的常用用法，可以使用cheat tar命令查询

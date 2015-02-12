@@ -1,0 +1,118 @@
+The most commonly used git commands are:  
+   add        Add file contents to the index  
+   bisect     Find by binary search the change that introduced a bug  
+   branch     List, create, or delete branches  
+   checkout   Checkout a branch or paths to the working tree  
+   clone      Clone a repository into a new directory  
+   commit     Record changes to the repository  
+   diff       Show changes between commits, commit and working tree, etc  
+   fetch      Download objects and refs from another repository  
+   grep       Print lines matching a pattern  
+   init       Create an empty Git repository or reinitialize an existing one  
+   log        Show commit logs  
+   merge      Join two or more development histories together  
+   mv         Move or rename a file, a directory, or a symlink  
+   pull       Fetch from and integrate with another repository or a local branch  
+  
+   push       Update remote refs along with associated objects  
+   rebase     Forward-port local commits to the updated upstream head  
+   reset      Reset current HEAD to the specified state  
+   rm         Remove files from the working tree and from the index  
+   show       Show various types of objects  
+   status     Show the working tree status  
+   tag        Create, list, delete or verify a tag object signed with GPG 
+
+使gitignore生效的方法：
+在根目录下执行以下命令：
+$ git rm -r --cached .
+$ git add .
+$ git commit -m "fixed untracked files"
+
+#######################################################################
+【设置用户名和Email】
+$ git config --global user.name "Your name"
+$ git config --global user.email "YourEamil@example.com"
+--global表示这台机器上所有的仓库都使用此配置
+
+如果希望对单个仓库使用不一样的配置，那么修改.git\config
+[user]
+name = YourName
+email = YourEmail@example.com
+
+#######################################################################
+【基本操作】
+$ git init #初始化当前目录作为git仓库
+
+$ git add . #增加所有文件到暂存区
+
+$ git commit -m "init add files" #"init add files"是本次提交的注释
+
+$ git commit -a -m "init add files" #省略放到暂存区的操作，直接提交
+！注：在删除文件之后，需要直接使用git commit -a -m "remove files"命令提交修改
+
+$ git commit --amend -m "amend modify" #重新修改上次提交信息
+
+$ git status 
+①确认当前git仓库状态，可以看到untracked文件和目录为红色
+# Untracked files:    
+#   (use "git add <file>..." to include in what will be committed)   
+②使用git add命令后看到变成了待提交的更改，文件和目录页变为绿色
+# Changes to be committed:    
+#   (use "git rm --cached <file>..." to unstage)   
+③使用git commit提交后，在主分支上没东西可以提交了，工作目录是干净的
+# On branch master    
+nothing to commit, working directory clean
+
+#######################################################################
+【撤销操作】
+$ git checkout --filename #可以撤销工作区的修改
+
+!在修改文件之后将工作区的修改add到暂存区了，此时必须先使用git reset HEAD filename
+将暂存区的修改撤回到工作区的修改
+注：git用HEAD表示当前版本，HEAD^表示上一个版本，HEAD^^表示上上个版本，HEAD~100表示往前100个版本
+$ git reset HEAD file #将暂存区的修改撤回到工作区的修改，之后再使用git checkout命令撤销工作区的修改即可
+
+#######################################################################
+【仓库日志】
+$ git log #查看操作日记，底下那串很长的数据就是SHA1 ID，表示当前版本号
+commit aea0365712908805bc28540b4db9fd2f15360a8b  
+
+$ git log --pretty=oneline #这次给它添加一个参数，浏览器来方便很多
+
+$ git diff #查看上次提交和当前版本的差异，可以看到文件内容的改变
+
+$ git reflog #显示每一次操作的记录
+
+#######################################################################
+【版本管理】
+$ git log --pretty=oneline #总共是4个操作
+c5c83cfcdb25c67a5c66b4fe3844d0ea912830ec remove  
+a25c58804cb3f4045564fc0ec6a4e6eb4dae7072 amend modify  
+cba8800f2daaf4075a506b6d763798ea15ba11cc modify  
+aea0365712908805bc28540b4db9fd2f15360a8b init AddFiles
+
+$ git reset --hard a25c5
+--hard参数会把源码回退到指定版本，如果不用这个参数，则源码不会修改只会回退
+当然版本号可以不完全输入，输入前几个字符git就能帮你找到，但也不能太少
+
+#######################################################################
+【远程仓库】
+可以用URL来表示一个远程仓库，但如果这个URL很长，每次推送都很麻烦，基于此可以在
+创建远程仓库时给它取个别名
+$ git remote add test ../remote.git #添加一个远程仓库，取名为test
+
+$ git remote #查看远程仓库
+$ git remote -v #查看远程仓库详细信息
+$ git remote show test #查看远程仓库test的详细信息
+$ git remote rm test #移除远程仓库test
+
+$ git clone ../remote.git . #将一个远程仓库克隆到本地，源码和历史记录都会被克隆
+！此时remote就是当前目录的远程目录，初始名字为origin
+
+$ git push test #推送到远程仓库，直接使用远程仓库名test
+$ git pull origin #拉取远程仓库最新版本
+
+更多关于git的内容参见以下链接：
+http://blog.csdn.net/jackystudio/article/details/12271877
+http://www.csdn.net/article/2014-06-17/2820265-git
+http://blog.csdn.net/lishuo_os_ds/article/details/8078475#sec-1.13

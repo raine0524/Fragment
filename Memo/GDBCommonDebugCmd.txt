@@ -1,0 +1,37 @@
+调用gdb编译需要在cc后面加 -g参数再加-o；
+[root@redhat home]#gdb 调试文件：启动gdb
+gdb带参调试方法：gdb --args ./prog arg1 arg2 arg3
+
+(gdb) l ：（字母l）从第一行开始列出源码
+(gdb) break n :在第n行处设置断点
+(gdb) break func：在函数func()的入口处设置断点
+(gdb) info break： 查看断点信息
+
+
+(gdb) r：运行程序
+(gdb) n：单步执行
+(gdb) c：继续运行
+(gdb) p 变量 ：打印变量的值
+
+
+(gdb) bt：查看函数堆栈
+(gdb) finish：退出函数
+
+
+(gdb) shell 命令行：执行shell命令行
+(gdb) cd 相当于shell的cd;
+(gdb)pwd ：显示当前所在目录
+(gdb)info program： 来查看程序的是否在运行，进程号，被暂停的原因。
+
+
+(gdb)clear 行号n：清除第n行的断点
+(gdb)delete 断点号n：删除第n个断点
+(gdb)disable 断点号n：暂停第n个断点
+(gdb)enable 断点号n：开启第n个断点
+(gdb)step：单步调试如果有函数调用，则进入函数；与命令n不同，n是不进入调用的函数的
+
+
+until：当你厌倦了在一个循环体内单步跟踪时，这个命令可以运行程序直到退出循环体。
+finish： 运行程序，直到当前函数完成返回，并打印函数返回时的堆栈地址和返回值及参数值等信息
+kill：将强行终止当前正在调试的程序
+quit：简记为 q ，退出gdb
