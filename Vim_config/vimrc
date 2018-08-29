@@ -8,6 +8,7 @@ set ruler
 set showcmd
 set cmdheight=2
 set laststatus=2
+set clipboard=unnamedplus
 
 "encode settings
 set fencs=utf-8,ucs-bom,shift-jis,gb18030,gbk,gb2312,cp936
@@ -17,9 +18,12 @@ set fileencodings=ucs-bom,utf-8,cp936
 set fileencoding=utf-8
 
 "keyboard commands
-map <C-A> ggVGY
+map <C-A> ggVG
 map! <C-A> <Esc>ggVGY
-vmap <C-c> "+y
+
+map <C-c> "+y
+nmap <C-v> "+gp
+imap <C-v> <Esc>"+gp
 
 "utils settings
 set autoread
@@ -58,7 +62,7 @@ set viminfo+=!
 set linespace=0
 set wildmenu
 set backspace=2
-set mouse=a
+set mouse=v
 set selection=exclusive
 set selectmode=mouse,key
 set report=0
